@@ -306,10 +306,79 @@ final class Interceptor
      * @param $column
      * @param $values
      */
-    private function groupBy($column, $values)
+    private function groupBy($columns)
     {
-        $params = $this->prepareConditionals($values);
-        $this->eloquent = $this->eloquent->groupBy($column, $values);
+        $this->eloquent = $this->eloquent->groupBy($columns);
+    }
+
+    /**
+     * Raw expressions
+     *
+     * @return void
+     */
+    private function selectRaw()
+    {
+        $expression = $this->prepareRaw(func_get_arg(0));
+        $values = func_num_args() > 1 ? func_get_arg(1) ?? [] : [];
+
+        if (func_num_args() === 1) {
+            $this->eloquent = $this->eloquent->selectRaw($expression);
+        } else {
+            // selectRaw[expression]=variables
+            // selectRaw[sum(?) as soma]=total
+            $this->eloquent = $this->eloquent->selectRaw($expression, $values);
+        }
+    }
+
+    /**
+     * Raw expressions
+     *
+     * @return void
+     */
+    private function havingRaw()
+    {
+        $expression = $this->prepareRaw(func_get_arg(0));
+        $values = func_num_args() > 1 ? func_get_arg(1) ?? [] : [];
+
+        if (func_num_args() === 1) {
+            $this->eloquent = $this->eloquent->havingRaw($expression);
+        } else {
+            // havingRaw[expression]=variables
+            // havingRaw[id > ?]=10
+            // havingRaw[count(id) > ?]=10
+            // havingRaw[sum(id) > ?]=10
+            $this->eloquent = $this->eloquent->havingRaw($expression, $values);
+        }
+    }
+
+    /**
+     * Raw expressions
+     *
+     * @return void
+     */
+    private function orderByRaw()
+    {
+        $expression = $this->prepareRaw(func_get_arg(0));
+        $this->eloquent = $this->eloquent->orderByRaw($expression);
+    }
+
+    /**
+     * Raw expressions
+     *
+     * @return void
+     */
+    private function whereRaw()
+    {
+        $expression = $this->prepareRaw(func_get_arg(0));
+        $values = func_num_args() > 1 ? func_get_arg(1) ?? [] : [];
+
+        if (func_num_args() === 1) {
+            $this->eloquent = $this->eloquent->whereRaw($expression);
+        } else {
+            // whereRaw[expression]=variables
+            // whereRaw[id > IF(...,?,..)]=10
+            $this->eloquent = $this->eloquent->whereRaw($expression, $values);
+        }
     }
 
     /**
@@ -352,7 +421,7 @@ final class Interceptor
      * @param $parameters
      * @return array
      */
-    private function prepareConditionals($parameters)
+    private function prepareConditionals($parameters): array
     {
         $params = [];
         switch (count($parameters)) {
@@ -377,12 +446,21 @@ final class Interceptor
         $key = array_keys($arguments)[0];
         $values = array_values($arguments);
         if (str_contains($values[0], ',')) {
-            $values = explode(',', str_replace(['(', ')'], '', $values[0]));
+            $values = explode(',', str_replace(['[', ']'], '', $values[0]));
         }
 
         return [
             $key,
             $values,
         ];
+    }
+    /**
+     * Remover caracteres inválidos para montar a sintaxe.
+     *
+     * @return string
+     */
+    private function prepareRaw($expression): string
+    {
+        return str_replace(['[', ']', '__'], ['', '', ' '], $expression);
     }
 }
