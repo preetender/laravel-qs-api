@@ -1,0 +1,19 @@
+{
+    "name": "preetender/laravel-qs-api",
+    "description": "Consultas complexas via uri",
+    "require": {
+        "illuminate/support": "^5.8",
+        "illuminate/http": "^5.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Preetender\\QueryString\\": "src/"
+        }
+    },
+    "license": "mit",
+    "authors": [{
+        "name": "César Augusto",
+        "email": "cesinhagutierres@gmail.com"
+    }],
+    "minimum-stability": "stable"
+}
