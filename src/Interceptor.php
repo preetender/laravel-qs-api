@@ -60,6 +60,7 @@ final class Interceptor
 
         return $this->request->has('paginate') ? $this->eloquent->paginate($this->request->paginate) : $this->eloquent->get();
     }
+
     /**
      * @param $value
      */
@@ -67,6 +68,32 @@ final class Interceptor
     {
         $fields = explode(',', $value);
         $this->eloquent = $this->eloquent->select(...$fields);
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     */
+    private function where($column, $values)
+    {
+        $params = $this->prepareConditionals($values);
+        $this->eloquent = $this->eloquent->where($column, ...$params);
+    }
+
+    /**
+     * @param $column
+     */
+    private function whereNull($column)
+    {
+        $this->eloquent = $this->eloquent->whereNull($column);
+    }
+
+    /**
+     * @param $column
+     */
+    private function whereNotNull($column)
+    {
+        $this->eloquent = $this->eloquent->whereNotNull($column);
     }
 
     /**
@@ -161,16 +188,6 @@ final class Interceptor
      * @param $column
      * @param $values
      */
-    private function where($column, $values)
-    {
-        $params = $this->prepareConditionals($values);
-        $this->eloquent = $this->eloquent->where($column, ...$params);
-    }
-
-    /**
-     * @param $column
-     * @param $values
-     */
     private function orWhere($column, $values)
     {
         $params = $this->prepareConditionals($values);
@@ -178,20 +195,66 @@ final class Interceptor
     }
 
     /**
-     * @param $value
+     * @param $column
+     * @param $values
      */
-    private function whereNull($value)
+    private function orWhereIn($column, $values)
     {
-        $this->eloquent = $this->eloquent->whereNull($value);
+        $this->eloquent = $this->eloquent->orWhereIn($column, $values);
     }
 
     /**
-     * @param $value
+     * @param $column
+     * @param $values
      */
-    private function whereNotNull($value)
+    private function orWhereNotIn($column, $values)
     {
-        $this->eloquent = $this->eloquent->whereNotNull($value);
+        $this->eloquent = $this->eloquent->orWhereNotIn($column, $values);
     }
+
+    /**
+     * @param $column
+     * @param $values
+     */
+    private function orWhereBetween($column, $values)
+    {
+        $this->eloquent = $this->eloquent->orWhereBetween($column, $values);
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     */
+    private function orWhereNotBetween($column, $values)
+    {
+        $this->eloquent = $this->eloquent->orWhereNotBetween($column, $values);
+    }
+    /**
+     * @param $column
+     */
+    private function orWhereNull($column)
+    {
+        $this->eloquent = $this->eloquent->orWhereNull($column);
+    }
+
+    /**
+     * @param $column
+     */
+    private function orWhereNotNull($column)
+    {
+        $this->eloquent = $this->eloquent->orWhereNotNull($column);
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     */
+    private function having($column, $values)
+    {
+        $params = $this->prepareConditionals($values);
+        $this->eloquent = $this->eloquent->having($column, ...$params);
+    }
+
 
     /**
      * @param $value
@@ -210,6 +273,26 @@ final class Interceptor
     }
 
     /**
+     * alias offset
+     *
+     * @param $value
+     */
+    private function skip($value)
+    {
+        $this->eloquent = $this->eloquent->skip($value);
+    }
+
+    /**
+     * alias offset
+     *
+     * @param $value
+     */
+    private function take($value)
+    {
+        $this->eloquent = $this->eloquent->take($value);
+    }
+
+    /**
      * @param $column
      * @param $values
      */
@@ -217,6 +300,16 @@ final class Interceptor
     {
         $params = $this->prepareConditionals($values);
         $this->eloquent = $this->eloquent->orderBy($column, $values[0]);
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     */
+    private function groupBy($column, $values)
+    {
+        $params = $this->prepareConditionals($values);
+        $this->eloquent = $this->eloquent->groupBy($column, $values);
     }
 
     /**
