@@ -35,3 +35,13 @@ Classe simples para tratar de requisições GET para consultas elegantes no eloq
 -   scope (x)
 -   bind (x)
 -   with (x)
+
+### Raw expressions
+
+-   selectRaw (x)
+-   havingRaw (x)
+-   orHavingRaw ()
+-   orWhereRaw ()
+-   orderByRaw (x)
+
+Veja como utilizar esse recurso em seu projeto, [Wiki](https://github.com/preetender/laravel-qs-api/wiki/Inicio).
