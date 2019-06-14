@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Support\Api;
+namespace Preetender\QueryString;
 
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Http\Resources\MissingValue;
