@@ -75,7 +75,7 @@ class ApiController extends Controller
 
         abort_if(!$this->checkAttributeExists('model'), 500, 'Model não localizada.');
 
-        $result = $this->model::findOrFail($id);
+	$result = is_string($this->model) ? $this->model::findOrFail($id) : $this->model->first();
 
         if ($this->checkAttributeExists('resource')) {
             return new $this->resource($result);
