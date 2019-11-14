@@ -39,9 +39,7 @@ class ApiController extends Controller
     public function index(Interceptor $interceptor)
     {
         if (method_exists($this, 'beforeIndex')) {
-            //
-            // Solicitar antes do carregamento
-            //
+            // Injetar antes do carregamento
             $this->beforeIndex($interceptor->getRequest());
         }
 
@@ -52,9 +50,7 @@ class ApiController extends Controller
             $this->modelNewInstance
         );
 
-        if ($this->checkAttributeExists('resource')) {
-            return $this->resource::collection($resource);
-        }
+        if ($this->checkAttributeExists('resource')) return $this->resource::collection($resource);
 
         return $resource;
     }
@@ -67,19 +63,15 @@ class ApiController extends Controller
     public function show(Request $request, $id)
     {
         if (method_exists($this, 'beforeShow')) {
-            //
-            // Solicitar antes do carregamento
-            //
+            // Injetar antes do carregamento
             $this->beforeShow($request);
         }
 
         abort_if(!$this->checkAttributeExists('model'), 500, 'Model não localizada.');
 
-	$result = is_string($this->model) ? $this->model::findOrFail($id) : $this->model->first();
+        $result = is_string($this->model) ? $this->model::findOrFail($id) : $this->model->first();
 
-        if ($this->checkAttributeExists('resource')) {
-            return new $this->resource($result);
-        }
+        if ($this->checkAttributeExists('resource')) return new $this->resource($result);
 
         return $result;
     }
