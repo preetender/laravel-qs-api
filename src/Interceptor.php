@@ -3,6 +3,7 @@
 namespace Preetender\QueryString;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use ReflectionClass;
 
 final class Interceptor
@@ -50,9 +51,7 @@ final class Interceptor
         if (sizeof($parameters) > 0) {
             $params = [];
 
-            //
             // Gerar atributos enumerados
-            //
             for ($i = 1; $i <= 10; $i++) {
                 $params[] = ":$i";
             }
@@ -285,7 +284,6 @@ final class Interceptor
         $this->eloquent = $this->eloquent->having($column, ...$params);
     }
 
-
     /**
      * @param $value
      * @return void
@@ -424,8 +422,8 @@ final class Interceptor
      */
     private function scope($action, $value = null): void
     {
-        $method = str_start(studly_case($action), 'scope');
-        dd($method);
+        $method = Str::start(Str::studly_case($action), 'scope');
+
         if (method_exists($this->eloquent, $method)) {
             $this->eloquent = $this->eloquent->{$action}(isset($value) && $value[0] !== null ? $value[0] : true);
         }
@@ -482,7 +480,7 @@ final class Interceptor
     {
         $key = array_keys($arguments)[0];
         $values = array_values($arguments);
-        if (str_contains($values[0], ',')) {
+        if (Str::contains($values[0], ',')) {
             $values = explode(',', str_replace(['[', ']'], '', $values[0]));
         }
 
