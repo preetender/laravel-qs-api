@@ -2,10 +2,10 @@
 
 namespace Preetender\QueryString;
 
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
 
-class ApiResource extends Resource
+class ApiResource extends JsonResource
 {
     /**
      * Verificar se existe chave na query de consulta
@@ -27,15 +27,14 @@ class ApiResource extends Resource
 
             if ($keys === 0 && isset($query[$method]) && array_key_exists($key, $query[$method])) {
                 return value($value);
-                break;
             }
 
             $identified = "$method:$keys";
 
             if (isset($query[$identified]) && array_key_exists($key, $query[$identified])) {
                 return value($value);
-                break;
             }
+
             // next
             $keys++;
         } while ($keys <= $tests);
