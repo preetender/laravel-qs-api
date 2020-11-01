@@ -1,6 +1,6 @@
 <?php
 
-namespace Preetender\QueryString;
+namespace Preetender\Query;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;

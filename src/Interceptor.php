@@ -1,6 +1,6 @@
 <?php
 
-namespace Preetender\QueryString;
+namespace Preetender\Query;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

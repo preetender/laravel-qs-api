@@ -1,6 +1,6 @@
 <?php
 
-namespace Preetender\QueryString\Concerns;
+namespace Preetender\Query\Concerns;
 
 trait Map
 {
