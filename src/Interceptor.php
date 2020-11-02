@@ -4,7 +4,7 @@ namespace Preetender\Query;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Preetender\QueryString\Concerns\Map;
+use Preetender\Query\Concerns\Map;
 use ReflectionClass;
 
 final class Interceptor
