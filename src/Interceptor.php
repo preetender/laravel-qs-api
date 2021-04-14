@@ -426,7 +426,7 @@ final class Interceptor
      */
     private function scope($action, $value = null): void
     {
-        $method = Str::start(Str::studly_case($action), 'scope');
+        $method = Str::start(Str::studly($action), 'scope');
 
         if (method_exists($this->eloquent, $method)) {
             $this->eloquent = $this->eloquent->{$action}(isset($value) && $value[0] !== null ? $value[0] : true);
@@ -441,6 +441,7 @@ final class Interceptor
     private function with($relation, $values): void
     {
         $keys = implode(',', $values);
+        
         $this->eloquent = $this->eloquent->with("{$relation}:$keys");
     }
 
