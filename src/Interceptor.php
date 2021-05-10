@@ -62,7 +62,7 @@ final class Interceptor
 
             foreach ($parameters as $method => $arguments) {
                 $method = str_replace($params, '', $method);
-                $arguments = json_decode($arguments, JSON_OBJECT_AS_ARRAY) ?? $arguments;
+                $arguments = is_array($arguments) ? $arguments : json_decode($arguments, JSON_OBJECT_AS_ARRAY) ?? $arguments;
                 
                 if (method_exists($this, $method)) {
                     $arguments = is_string($arguments) ? [$arguments] : $this->extractArguments($arguments);

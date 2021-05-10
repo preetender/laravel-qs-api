@@ -2,6 +2,9 @@
 
 namespace Preetender\Query\Concerns;
 
+use Illuminate\Support\Str;
+use InvalidArgumentException;
+
 trait Map
 {
 
@@ -35,7 +38,12 @@ trait Map
     {
         $key = array_keys($arguments)[0];
         $values = array_values($arguments);
-        if (app('Str')->contains($values[0], ',')) {
+
+        if(!in_array($key, $this->eloquent->getFillable())) {
+            throw new InvalidArgumentException("key $key not accept");
+        }
+        
+        if (Str::contains($values[0], ',')) {
             $values = explode(',', str_replace(['[', ']'], '', $values[0]));
         }
 
