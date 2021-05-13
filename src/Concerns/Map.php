@@ -39,10 +39,6 @@ trait Map
         $key = array_keys($arguments)[0];
         $values = array_values($arguments);
 
-        if(!in_array($key, $this->eloquent->getFillable())) {
-            throw new InvalidArgumentException("key $key not accept");
-        }
-        
         if (Str::contains($values[0], ',')) {
             $values = explode(',', str_replace(['[', ']'], '', $values[0]));
         }
