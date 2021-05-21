@@ -451,12 +451,12 @@ final class Interceptor
     }
 
     /**
-     * Executar ações na eloquente
+     * Executar metodos dentro da model
      *
      * @return void
      */
-    private function bind(string $call, $value = null): void
+    private function call(string $call, $value = []): void
     {
-        $this->eloquent = $this->eloquent->{$call}(...$value);
+        $this->eloquent = $this->eloquent->getModel()->{$call}(...$value);
     }
 }
